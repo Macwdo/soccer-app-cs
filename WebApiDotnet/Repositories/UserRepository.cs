@@ -6,64 +6,52 @@ namespace WebApiDotnet.Repositories;
 
 public class UserRepository: IUserRepository
 {
-    private readonly WebApiDotnetDBContext _dbContext;
-
-    public UserRepository(WebApiDotnetDBContext webApiDotnetDbContext)
-    {
-        _dbContext = webApiDotnetDbContext;
-    }
+    private readonly WebApiContext _context;
     
-    
-    public async Task<UserModel> Create(UserModel user)
+    public UserRepository(WebApiContext context)
     {
-         await _dbContext.User.AddAsync(user);
-         await _dbContext.SaveChangesAsync();
-
-         return user;
+        _context = context;
     }
-
-    public async Task<List<UserModel>> Read()
+    public async Task<List<User>> Find()
     {
-        return await _dbContext.User.ToListAsync();
-    }
-
-    public async Task<UserModel> Read(int id)
-    {
-        return await _dbContext.User.FirstOrDefaultAsync(user => user.Id == id);
-    }
-
-    public async Task<UserModel> Update(UserModel user, int id)
-    {
-        UserModel userById = await Read(id);
-
-        if (userById == null)
-        {
-            throw new Exception($"User by id equal {id} not found");
-        }
-
-        userById.Id = user.Id;
-        userById.Name = user.Name;
-        userById.Email = user.Email;
-
-        _dbContext.User.Update(userById);
-        await _dbContext.SaveChangesAsync();
-        return userById;
-
-    }
-
-    public async Task<bool> Delete(int id)
-    {
-        UserModel userById = await Read(id);
-
-        if (userById == null)
-        {
-            throw new Exception($"User by equal {id} not found");
-        }
-
-        _dbContext.User.Remove(userById);
-        await _dbContext.SaveChangesAsync();
-        return true;
+        return await _context.User.ToListAsync();
         
-        throw new NotImplementedException();
+    }
+
+    public async Task<User?> Find(Guid guid)
+    {
+        return await _context.User.FirstOrDefaultAsync(i => i!.Id == guid);
+    }
+
+    public async Task<User> Add(User user)
+    {
+        await _context.User.AddAsync(user);
+        await _context.SaveChangesAsync();
+        return user;
+    }
+
+    public async Task<User?> Edit(Guid guid, User user)
+    {
+        var oldUser = await Find(guid);
+        if (oldUser == null)
+            return null;
+
+        _context.Entry(oldUser).CurrentValues.SetValues(user);
+        await _context.SaveChangesAsync();
+        return user;
+
+
+    }
+
+    public async Task<bool> Delete(Guid guid)
+    {
+        var user = await Find(guid);
+        if (user == null)
+            return false;
+
+        _context.Remove(user);
+        await _context.SaveChangesAsync();
+        return true;
+
     }
 }

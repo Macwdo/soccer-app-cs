@@ -1,0 +1,16 @@
+﻿version: "3.8"
+
+services:
+  webapidotnetdb:
+    container_name: "webapidotnetdb"
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    environment:
+      SA_PASSWORD: "SQLServer2019"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.data/sqlserver:/var/opt/mssql/data
+      - ./.data/sqlserver/log:/var/opt/mssql/log
+      - ./.data/sqlserver/secrets:/var/opt/mssql/secrets
