@@ -1,5 +1,84 @@
+# Arquivos de compilação
+*.dll
+*.exe
+*.pdb
+
+# Arquivos gerados pelo Visual Studio
+*.user
+*.vs/
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.*proj.user
+*.resharper*
+*ReSharper*
+*.DotSettings.user
+*.sln.docstates
+
+# Diretórios gerados pelo Visual Studio
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+
+# Arquivos gerados pelo MSBuild
+[Bb]in/
+[Oo]bj/
+
+# Arquivos NuGet
+*.nupkg
+*.nuget.props
+*.nuget.targets
+
+# Arquivos de publicação
+_PublishedWebsites/
+PublishProfiles/
+*.pubxml
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+*.tmp
+*.swp
+Thumbs.db
+[Tt]emp/
+[Oo]ut/
+
+# Arquivos de configuração
+*.config
+Web.config
+appSettings.config
+
+# Arquivos de pacote
+*.7z
+*.zip
+*.rar
+
+# Diretórios específicos para .NET Core/ASP.NET Core
+**/obj/
+**/bin/
+**/wwwroot/
+
+# Diretórios específicos para Visual Studio Code
+.vscode/
+
+# Arquivos específicos para Visual Studio Code
+.vscode/tasks.json
+.vscode/*.code-workspace
+
+# Dependências geradas pelo npm
+node_modules/
+
+# Dependências geradas pelo Yarn
+yarn.lock
+
+# Arquivos específicos para JetBrains Rider
+.idea/
+*.sln.iml
+
+# Arquivos de cache do ReSharper
+*.resharper*
+*.ReSharper*

@@ -1,4 +1,4 @@
-namespace WebApiDotnet.Models;
+namespace WebApiDotnet.Entities;
 
 
 public enum UserType

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApiDotnet.Models;
+using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Data;
 

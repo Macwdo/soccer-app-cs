@@ -14,3 +14,11 @@ services:
       - ./.data/sqlserver:/var/opt/mssql/data
       - ./.data/sqlserver/log:/var/opt/mssql/log
       - ./.data/sqlserver/secrets:/var/opt/mssql/secrets
+    
+  webapidotnetrabbitmq:
+   container_name: webapidotnetrabbitmq
+   image: rabbitmq:latest
+   restart: always
+   ports:
+     - 5672:5672
+     - 8080:15672  

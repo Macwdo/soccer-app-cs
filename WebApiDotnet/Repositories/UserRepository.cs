@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiDotnet.Data;
-using WebApiDotnet.Models;
+using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Repositories;
 

@@ -1,4 +1,4 @@
-using WebApiDotnet.Models;
+using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Repositories;
 

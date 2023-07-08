@@ -1,23 +1,30 @@
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using WebApiDotnet.Data;
-using WebApiDotnet.Models;
+using WebApiDotnet.Entities;
 using WebApiDotnet.Repositories;
+using ILogger = Serilog.ILogger;
 
 namespace WebApiDotnet.Controllers;
 
 public class UserController: Controller
 {
     private readonly IUserRepository _userRepository;
+    private readonly ILogger _logger;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(
+        IUserRepository userRepository,
+        ILogger logger
+        )
     {
         _userRepository = userRepository;
+        _logger = logger;
     }
 
 
     [HttpPost, Route("/users")]
     public async Task<IActionResult> Create([FromBody] User user)
-    {
+    { 
         var newUser = await _userRepository.Add(user);
         return Ok(newUser);
 
@@ -26,6 +33,7 @@ public class UserController: Controller
     [HttpGet, Route("/users")]
     public async Task<IActionResult> Get()
     {
+        BackgroundJob.Enqueue(() => Console.WriteLine("Enqueued at rabbit"));
         var users = await _userRepository.Find();
         return Ok(users);
     }
