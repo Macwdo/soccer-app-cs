@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Data;
 
-public class WebApiContext: DbContext
+public class WebApiContext: IdentityDbContext<UserEntity>
 {
     private readonly string _connectionString;
     
@@ -13,6 +14,10 @@ public class WebApiContext: DbContext
     {
         _connectionString = connectionString;
     }
+    public DbSet<GameEntity> Games { get; set; }
+    public DbSet<GoalEntity> Goals { get; set; }
+    public DbSet<PlayerEntity> Players  { get; set; }
+    public DbSet<PlayerGameEntity> PlayerGames  { get; set; }
     
     public override int SaveChanges()
     {
@@ -34,12 +39,11 @@ public class WebApiContext: DbContext
         return base.SaveChanges();
     }
     
-    public DbSet<User?> User { get; set; }
-    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(WebApiContext).Assembly);
+
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

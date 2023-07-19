@@ -1,11 +1,16 @@
+using System.Text;
 using Hangfire;
 using Hangfire.SqlServer;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using WebApiDotnet.Data;
-using WebApiDotnet.Repositories;
 using Serilog;
 using WebApiDotnet.filters;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using WebApiDotnet.Entities;
 
 try
 {
@@ -35,15 +40,43 @@ try
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
 
+    #region Swagger
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme."
+        });
+            
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
+    });
+    #endregion
 
     # region Database
 
     builder.Services.AddDbContext<WebApiContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    // builder.Services.AddScoped<IUserRepository, UserRepository>();
 
     #endregion
 
@@ -90,6 +123,64 @@ try
 
     #endregion
 
+    #region Claims
+
+    builder.Services.AddIdentity<UserEntity, IdentityRole>( o =>
+    {
+        o.Password.RequireDigit = false;
+        o.Password.RequireLowercase = false;
+        o.Password.RequireUppercase = false;
+        o.Password.RequireNonAlphanumeric = false;
+        o.User.RequireUniqueEmail = true;
+    }).AddEntityFrameworkStores<WebApiContext>() ;
+
+    // var adminRole = new IdentityRole("Admin");
+    // await roleManager.CreateAsync(adminRole);
+
+    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.create"));
+    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.read"));
+    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.update"));
+    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.delete"));
+
+
+    builder.Services.AddAuthentication(
+        options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+        }
+        ).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["JWT_CONFIG:VALID_ISSUER"],
+                ValidAudience = builder.Configuration["JWT_CONFIG:VALID_AUDIENCE"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT_CONFIG:SECRET"]))
+            };
+        });
+    
+    builder.Services.AddAuthorization(options =>
+    {
+        // var claims = new Dictionary<string, List<string>>();
+        // claims.Add("User", new List<string>() {"create", "read", "update", "delete"});
+
+        // var adminPolicy = new AuthorizationPolicyBuilder()
+        // .RequireAuthenticatedUser()
+        // .RequireRole("Admin")
+        // .RequireClaim("User", )
+        // .Build();
+
+        // options.AddPolicy("RequireAdminOnly", policy => 
+        //        policy.RequireRole("User", claims["User"])
+        //        );
+    });
+    #endregion
+
 
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     var app = builder.Build();
@@ -116,6 +207,7 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();
