@@ -10,7 +10,7 @@ public class PlayerEntity: BaseEntity{
 
     // One to One -> Player -> User
     public UserEntity? User {get; set;}
-    public int UserId {get; set;}
+    public string? UserId {get; set;}
 
     // One to Many -> Player -> PlayerBill
     public List<PlayerBillEntity> PlayerBills {get; } = new List<PlayerBillEntity>();
@@ -20,6 +20,6 @@ public class PlayerEntity: BaseEntity{
     public int PlayerBankId {get; set;}
 
     // Many to Many -> Players -> Games
-    public List<GameEntity> Games {get;} = new();
+    public List<PlayerGameEntity> PlayerGames { get; } = new List<PlayerGameEntity>();
 
 }

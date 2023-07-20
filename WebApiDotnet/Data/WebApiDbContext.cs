@@ -1,16 +1,17 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Data;
 
-public class WebApiContext: IdentityDbContext<UserEntity>
+public class WebApiDbContext: IdentityDbContext<UserEntity>
 {
     private readonly string _connectionString;
     
-    public WebApiContext(DbContextOptions<WebApiContext> options): base(options){}
+    public WebApiDbContext(DbContextOptions<WebApiDbContext> options): base(options){}
     
-    public WebApiContext(string connectionString)
+    public WebApiDbContext(string connectionString)
     {
         _connectionString = connectionString;
     }
@@ -42,7 +43,7 @@ public class WebApiContext: IdentityDbContext<UserEntity>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(typeof(WebApiContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(WebApiDbContext).Assembly);
 
     }
     

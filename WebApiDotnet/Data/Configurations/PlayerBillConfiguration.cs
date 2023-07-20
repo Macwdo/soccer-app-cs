@@ -17,6 +17,9 @@ public class PlayerBillConfiguration : IEntityTypeConfiguration<PlayerBillEntity
         builder.Property(pb => pb.UpdatedAt);
         
         builder.HasOne(pb => pb.Player)
-            .WithMany(p => p.PlayerBills);
+            .WithMany(p => p.PlayerBills)
+            .HasForeignKey(pb => pb.PlayerId)
+            .IsRequired()
+            ;
     }
 }

@@ -73,7 +73,7 @@ try
 
     # region Database
 
-    builder.Services.AddDbContext<WebApiContext>(options =>
+    builder.Services.AddDbContext<WebApiDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
     // builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -132,7 +132,7 @@ try
         o.Password.RequireUppercase = false;
         o.Password.RequireNonAlphanumeric = false;
         o.User.RequireUniqueEmail = true;
-    }).AddEntityFrameworkStores<WebApiContext>() ;
+    }).AddEntityFrameworkStores<WebApiDbContext>() ;
 
     // var adminRole = new IdentityRole("Admin");
     // await roleManager.CreateAsync(adminRole);

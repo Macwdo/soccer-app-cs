@@ -16,6 +16,8 @@ public class PlayerBankConfiguration : IEntityTypeConfiguration<PlayerBankEntity
         builder.Property(pb => pb.UpdatedAt);
 
         builder.HasOne(pb => pb.Player)
-            .WithOne(p => p.PlayerBank);
+            .WithOne(p => p.PlayerBank)
+            .HasForeignKey<PlayerEntity>(p => p.PlayerBankId)
+            .IsRequired(false);
     }
 }

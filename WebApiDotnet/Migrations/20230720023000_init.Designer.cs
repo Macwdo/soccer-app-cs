@@ -11,9 +11,9 @@ using WebApiDotnet.Data;
 
 namespace WebApiDotnet.Migrations
 {
-    [DbContext(typeof(WebApiContext))]
-    [Migration("20230710232603_Identity")]
-    partial class Identity
+    [DbContext(typeof(WebApiDbContext))]
+    [Migration("20230720023000_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,16 +158,197 @@ namespace WebApiDotnet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebApiDotnet.Entities.User", b =>
+            modelBuilder.Entity("WebApiDotnet.Entities.GameEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("GameDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Game", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.GoalEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlayerGameId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerGameId");
+
+                    b.ToTable("Goal", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerBankEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PixKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlayerBank", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerBillEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BillType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerBill", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("PlayerBankId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerBankId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("Player", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerGameEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerGame", (string)null);
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.UserEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -240,7 +421,7 @@ namespace WebApiDotnet.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WebApiDotnet.Entities.User", null)
+                    b.HasOne("WebApiDotnet.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -249,7 +430,7 @@ namespace WebApiDotnet.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WebApiDotnet.Entities.User", null)
+                    b.HasOne("WebApiDotnet.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +445,7 @@ namespace WebApiDotnet.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApiDotnet.Entities.User", null)
+                    b.HasOne("WebApiDotnet.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -273,11 +454,93 @@ namespace WebApiDotnet.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WebApiDotnet.Entities.User", null)
+                    b.HasOne("WebApiDotnet.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.GoalEntity", b =>
+                {
+                    b.HasOne("WebApiDotnet.Entities.PlayerGameEntity", "PlayerGame")
+                        .WithMany("Goals")
+                        .HasForeignKey("PlayerGameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerGame");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerBillEntity", b =>
+                {
+                    b.HasOne("WebApiDotnet.Entities.PlayerEntity", "Player")
+                        .WithMany("PlayerBills")
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerEntity", b =>
+                {
+                    b.HasOne("WebApiDotnet.Entities.PlayerBankEntity", "PlayerBank")
+                        .WithOne("Player")
+                        .HasForeignKey("WebApiDotnet.Entities.PlayerEntity", "PlayerBankId");
+
+                    b.HasOne("WebApiDotnet.Entities.UserEntity", "User")
+                        .WithOne("Player")
+                        .HasForeignKey("WebApiDotnet.Entities.PlayerEntity", "UserId");
+
+                    b.Navigation("PlayerBank");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerGameEntity", b =>
+                {
+                    b.HasOne("WebApiDotnet.Entities.GameEntity", "Game")
+                        .WithMany("PlayerGames")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApiDotnet.Entities.PlayerEntity", "Player")
+                        .WithMany("PlayerGames")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.GameEntity", b =>
+                {
+                    b.Navigation("PlayerGames");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerBankEntity", b =>
+                {
+                    b.Navigation("Player")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerEntity", b =>
+                {
+                    b.Navigation("PlayerBills");
+
+                    b.Navigation("PlayerGames");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.PlayerGameEntity", b =>
+                {
+                    b.Navigation("Goals");
+                });
+
+            modelBuilder.Entity("WebApiDotnet.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }

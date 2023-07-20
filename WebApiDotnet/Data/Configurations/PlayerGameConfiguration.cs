@@ -17,5 +17,15 @@ public class PlayerGameConfiguration : IEntityTypeConfiguration<PlayerGameEntity
             .WithOne(g => g.PlayerGame)
             .HasForeignKey(g => g.PlayerGameId)
             .IsRequired();
+
+        builder.HasOne(pg => pg.Player)
+            .WithMany(p => p.PlayerGames)
+            .HasForeignKey(pg => pg.PlayerId)
+            .IsRequired();
+        
+        builder.HasOne(pg => pg.Game)
+            .WithMany(p => p.PlayerGames)
+            .HasForeignKey(pg => pg.GameId)
+            .IsRequired();
     }
 }
