@@ -4,11 +4,4 @@ using WebApiDotnet.Model;
 
 namespace WebApiDotnet.Mappers;
 
-public class UserProfile: Profile
-{
-    public UserProfile()
-    {
-        CreateMap<UserEntity, UserRequest>().ReverseMap();
-        CreateMap<UserEntity, UserResponse>().ReverseMap();
-    }
-}
+public class UserProfile: BaseProfile<UserEntity, UserRequest, UserResponse> {}

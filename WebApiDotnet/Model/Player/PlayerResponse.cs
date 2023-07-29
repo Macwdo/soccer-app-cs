@@ -1,9 +1,8 @@
-using System.ComponentModel;
 using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Model.Player;
 
-public class PlayerResponse
+public class PlayerResponse: BaseResponse
 {
     public string? Phone { get; set;}
     
@@ -13,8 +12,10 @@ public class PlayerResponse
 
     public bool IsActive {get; set;}
     
-    public string? UserId {get; set;}
+    public UserResponse? User { get; set; }
     
-    public string? PlayerBankId {get; set;}
+    public PlayerBankEntity? PlayerBank { get; set; }
     
+    public IEnumerable<PlayerGameEntity>? PlayerGames { get; set; }
+
 }

@@ -6,7 +6,5 @@ namespace WebApiDotnet.Repositories;
 
 public class GameRepository: BaseRepository<GameEntity>, IGameRepository
 {
-    public GameRepository(WebApiDbContext context) : base(context)
-    {
-    }
+    public GameRepository(WebApiDbContext context) : base(context) {}
 }

@@ -1,3 +1,5 @@
+using WebApiDotnet.Entities;
+
 namespace WebApiDotnet.Repositories.Interfaces;
 
-public interface IPlayerBankRepository: IBaseRepository<PlayerBankRepository>{}
+public interface IPlayerBankRepository: IBaseRepository<PlayerBankEntity> {}

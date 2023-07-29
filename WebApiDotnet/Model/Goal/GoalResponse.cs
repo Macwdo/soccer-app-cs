@@ -1,6 +1,6 @@
 namespace WebApiDotnet.Model.Goal;
 
-public class GoalResponse
+public class GoalResponse: BaseResponse
 {
     
 }

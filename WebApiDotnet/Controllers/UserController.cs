@@ -1,5 +1,4 @@
 using AutoMapper;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,9 @@ using ILogger = Serilog.ILogger;
 
 namespace WebApiDotnet.Controllers;
 
+
+[Route("api/user")]
+[ApiController]
 public class UserController: Controller
 {
     private readonly IMapper _mapper;
@@ -27,7 +29,7 @@ public class UserController: Controller
     }
 
     
-    [HttpPost, Route("user")] // Admin
+    [HttpPost] // Admin
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<IdentityError>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -45,14 +47,14 @@ public class UserController: Controller
 
     }
 
-    [HttpGet, Route("users"), AllowAnonymous]
+    [HttpGet, AllowAnonymous]
     public IActionResult Get()
     {
         var users = _mapper.Map<List<UserResponse>>(_userManager.Users);
         return Ok(users);
     }
 
-    [HttpGet, Route("user/{id}"), AllowAnonymous]
+    [HttpGet("{id}"), AllowAnonymous]
     public async Task<IActionResult> Get(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -62,7 +64,7 @@ public class UserController: Controller
         return Ok(userResponse);
     }
 
-    [HttpPut, Route("user/{id}")]  // Admin
+    [HttpPut("{id}")]  // Admin
     public async Task<IActionResult> Update(string id, [FromBody] UserRequest userRequest)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -76,7 +78,7 @@ public class UserController: Controller
         return Ok(userResponse);
     }
 
-    [HttpDelete, Route("user/{id}")] // Admin
+    [HttpDelete("{id}")] // Admin
     public async Task<IActionResult> Delete(string id)
     {
         var user = await _userManager.FindByIdAsync(id);

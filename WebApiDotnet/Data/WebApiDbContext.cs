@@ -18,7 +18,10 @@ public class WebApiDbContext: IdentityDbContext<UserEntity>
     public DbSet<GameEntity> Games { get; set; }
     public DbSet<GoalEntity> Goals { get; set; }
     public DbSet<PlayerEntity> Players  { get; set; }
-    public DbSet<PlayerGameEntity> PlayerGames  { get; set; }
+    public DbSet<PlayerBankEntity> PlayerBank  { get; set; }
+    public DbSet<PlayerBillEntity> PlayerBills  { get; set; }
+    
+    public DbSet<PlayerGameEntity> PlayersGames  { get; set; }
     
     public override int SaveChanges()
     {

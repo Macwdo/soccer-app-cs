@@ -6,11 +6,10 @@ using WebApiDotnet.Services;
 
 namespace WebApiDotnet.Controllers;
 
-public class AuthController : ControllerBase
+public class AuthController : Controller
 {
     private readonly UserManager<UserEntity> _userManager;
     private readonly IConfiguration _configuration;
-        
         
     public AuthController(
         UserManager<UserEntity> userManager,

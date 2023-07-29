@@ -9,7 +9,7 @@ public class PlayerEntity: BaseEntity{
     public bool IsActive {get; set;}
 
     // One to One -> Player -> User
-    public UserEntity? User {get; set;}
+    public UserEntity User {get; set;}
     public string? UserId {get; set;}
 
     // One to Many -> Player -> PlayerBill

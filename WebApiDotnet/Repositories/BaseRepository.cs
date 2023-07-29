@@ -7,7 +7,7 @@ namespace WebApiDotnet.Repositories;
 
 public abstract class BaseRepository<TEntity>: IBaseRepository<TEntity> where TEntity : class
 {
-    private readonly WebApiDbContext _context;
+    protected WebApiDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
     protected BaseRepository(WebApiDbContext context)
@@ -16,12 +16,15 @@ public abstract class BaseRepository<TEntity>: IBaseRepository<TEntity> where TE
         _dbSet = _context.Set<TEntity>();
     }
 
-    public async Task Add(TEntity entity)
+
+    public virtual async Task<TEntity> Add(TEntity entity)
     {
         try
         {
-            await _dbSet.AddAsync(entity);
+            var createdEntity = await _dbSet.AddAsync(entity);
             _context.SaveChanges();
+            return createdEntity.Entity;
+
         }
         catch (Exception e)
         {
@@ -29,21 +32,23 @@ public abstract class BaseRepository<TEntity>: IBaseRepository<TEntity> where TE
         }
     }
 
-    public async Task<TEntity?> GetById(int id)
+    public virtual async Task<TEntity?> GetById(int id)
     {
-        return await _dbSet.FirstOrDefaultAsync();
+        return await _dbSet.FindAsync(id);
     }
 
-    public async Task<IEnumerable<TEntity>> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAll()
     {
         return await _dbSet.ToListAsync();
     }
 
-    public TEntity Update(TEntity entity)
+    public virtual TEntity Update(TEntity entity)
     {
         try
         {
             _dbSet.Update(entity);
+            _context.SaveChanges();
+
             return entity;
         }
         catch (Exception e)
@@ -52,11 +57,13 @@ public abstract class BaseRepository<TEntity>: IBaseRepository<TEntity> where TE
         }
     }
 
-    public void Remove(TEntity entity)
+    public virtual void Remove(TEntity entity)
     {
         try
         {
             _dbSet.Remove(entity);
+            _context.SaveChanges();
+
         }
         catch (Exception e)
         {

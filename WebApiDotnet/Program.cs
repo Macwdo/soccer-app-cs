@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using WebApiDotnet.Entities;
 using WebApiDotnet.Repositories;
 using WebApiDotnet.Repositories.Interfaces;
+using WebApiDotnet.Repositories.Player;
 
 try
 {
@@ -79,8 +80,16 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
     // builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-    builder.Services.AddScoped<IGoalRepository, GoalRepository>();
+    builder.Services.AddScoped<IBaseRepository<PlayerEntity>, PlayerRepository>();
+    builder.Services.AddScoped<IBaseRepository<PlayerBankEntity>, PlayerBankRepository>();
+    builder.Services.AddScoped<IBaseRepository<PlayerBillEntity>, PlayerBillRepository>();
+    
+    builder.Services.AddScoped<IBaseRepository<GameEntity>, GameRepository>();
+    builder.Services.AddScoped<IBaseRepository<GoalEntity>, GoalRepository>();
+    
+    builder.Services.AddScoped<IBaseRepository<PlayerGameEntity>, PlayerGameRepository>();
+    
+    // builder.Services.AddScoped<IGameRepository, GameRepository>();
 
     #endregion
 
