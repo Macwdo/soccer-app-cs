@@ -17,7 +17,7 @@ public class PlayerEntity: BaseEntity{
     
     // One to One -> Player -> PlayerBank
     public PlayerBankEntity? PlayerBank {get; set;}
-    public int PlayerBankId {get; set;}
+    public int? PlayerBankId {get; set;}
 
     // Many to Many -> Players -> Games
     public List<PlayerGameEntity> PlayerGames { get; } = new List<PlayerGameEntity>();

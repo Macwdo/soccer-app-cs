@@ -29,7 +29,7 @@ public class PlayerConfiguration : IEntityTypeConfiguration<PlayerEntity>
         builder.HasMany(p => p.PlayerBills)
             .WithOne(pb => pb.Player)
             .HasForeignKey(pb => pb.PlayerId)
-            .IsRequired(false);
+            .IsRequired();
 
         // Relação One-to-One com a entidade PlayerBankEntity
         builder.HasOne(p => p.PlayerBank)

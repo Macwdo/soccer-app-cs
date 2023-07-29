@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApiDotnet.Entities;
+using WebApiDotnet.Repositories;
+using WebApiDotnet.Repositories.Interfaces;
 
 try
 {
@@ -77,6 +79,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
     // builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+    builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 
     #endregion
 
@@ -181,8 +185,9 @@ try
     });
     #endregion
 
-
+    #region AutoMapper
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    #endregion
     var app = builder.Build();
 
     #region Hangfire Dashboard

@@ -12,7 +12,7 @@ using WebApiDotnet.Data;
 namespace WebApiDotnet.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    [Migration("20230720023000_init")]
+    [Migration("20230729051942_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -290,7 +290,7 @@ namespace WebApiDotnet.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("PlayerBankId")
+                    b.Property<int?>("PlayerBankId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -302,7 +302,8 @@ namespace WebApiDotnet.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerBankId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PlayerBankId] IS NOT NULL");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -476,7 +477,9 @@ namespace WebApiDotnet.Migrations
                 {
                     b.HasOne("WebApiDotnet.Entities.PlayerEntity", "Player")
                         .WithMany("PlayerBills")
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Player");
                 });

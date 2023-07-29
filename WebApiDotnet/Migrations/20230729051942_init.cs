@@ -199,7 +199,7 @@ namespace WebApiDotnet.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PlayerBankId = table.Column<int>(type: "int", nullable: false),
+                    PlayerBankId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -237,7 +237,8 @@ namespace WebApiDotnet.Migrations
                         name: "FK_PlayerBill_Player_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Player",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -337,7 +338,8 @@ namespace WebApiDotnet.Migrations
                 name: "IX_Player_PlayerBankId",
                 table: "Player",
                 column: "PlayerBankId",
-                unique: true);
+                unique: true,
+                filter: "[PlayerBankId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_UserId",

@@ -10,5 +10,4 @@ public class LoginProfile: Profile
         CreateMap<UserRequest, LoginDTO>().ReverseMap();
     }
     
-    
 }

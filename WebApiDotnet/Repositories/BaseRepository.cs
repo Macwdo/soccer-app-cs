@@ -1,43 +1,67 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using WebApiDotnet.Data;
+using WebApiDotnet.Entities;
+using WebApiDotnet.Repositories.Interfaces;
 
-public class BaseRepository<TEntity> where TEntity : class
+namespace WebApiDotnet.Repositories;
+
+public abstract class BaseRepository<TEntity>: IBaseRepository<TEntity> where TEntity : class
 {
-    private readonly DbContext _dbContext;
+    private readonly WebApiDbContext _context;
+    private readonly DbSet<TEntity> _dbSet;
 
-    public BaseRepository(DbContext dbContext)
+    protected BaseRepository(WebApiDbContext context)
     {
-        _dbContext = dbContext;
+        _context = context;
+        _dbSet = _context.Set<TEntity>();
     }
 
-    public void Create(TEntity entity)
+    public async Task Add(TEntity entity)
     {
-        _dbContext.Set<TEntity>().Add(entity);
-        _dbContext.SaveChanges();
+        try
+        {
+            await _dbSet.AddAsync(entity);
+            _context.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
-    public List<TEntity> GetAll()
+    public async Task<TEntity?> GetById(int id)
     {
-        return _dbContext.Set<TEntity>().ToList();
+        return await _dbSet.FirstOrDefaultAsync();
     }
 
-    public TEntity GetById(int id)
+    public async Task<IEnumerable<TEntity>> GetAll()
     {
-        return _dbContext.Set<TEntity>().Find(id);
+        return await _dbSet.ToListAsync();
     }
 
-    public void Update(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
-        _dbContext.Set<TEntity>().Update(entity);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbSet.Update(entity);
+            return entity;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
-    public void Delete(int id)
+    public void Remove(TEntity entity)
     {
-        var entity = _dbContext.Set<TEntity>().Find(id);
-        if (entity == null) return;
-        _dbContext.Set<TEntity>().Remove(entity);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbSet.Remove(entity);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
+    
 }

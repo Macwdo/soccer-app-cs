@@ -4,9 +4,9 @@ using WebApiDotnet.Repositories.Interfaces;
 
 namespace WebApiDotnet.Repositories;
 
-public class GoalRepository: BaseRepository<GoalEntity>, IGoalRepository
+public class GameRepository: BaseRepository<GameEntity>, IGameRepository
 {
-    public GoalRepository(WebApiDbContext context) : base(context)
+    public GameRepository(WebApiDbContext context) : base(context)
     {
     }
 }

@@ -18,6 +18,6 @@ public class PlayerBankConfiguration : IEntityTypeConfiguration<PlayerBankEntity
         builder.HasOne(pb => pb.Player)
             .WithOne(p => p.PlayerBank)
             .HasForeignKey<PlayerEntity>(p => p.PlayerBankId)
-            .IsRequired(false);
+            .IsRequired();
     }
 }
