@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using WebApiDotnet.Entities;
 
 namespace WebApiDotnet.Model.Player;
@@ -12,9 +13,11 @@ public class PlayerResponse: BaseResponse
 
     public bool? IsActive {get; set;}
     
-    public UserResponse? User { get; set; }
+    [ForeignKey("UserId")]
+    public int? UserId { get; set; }
     
-    public PlayerBankEntity? PlayerBank { get; set; }
+    [ForeignKey("PlayerBankId")]
+    public int? PlayerBank { get; set; }
     
     public IEnumerable<PlayerGameEntity>? PlayerGames { get; set; }
 

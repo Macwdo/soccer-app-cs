@@ -9,7 +9,7 @@ public class UserRequest
     [Required, MaxLength(30)]
     public string Username { get; set; } = null!;
 
-    [Required]
+    [Required, EmailAddress]
     public string Email { get; set; } = null!;
     
     [Required, MinLength(8)]
