@@ -6,8 +6,8 @@ namespace WebApiDotnet.Controllers;
 
 public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Controller
 {
-    protected readonly IBaseRepository<TEntity> _entityRepository;
-    protected readonly IMapper _mapper;
+    private readonly IBaseRepository<TEntity> _entityRepository;
+    private readonly IMapper _mapper;
 
     public BaseCrudController(
         IBaseRepository<TEntity> entityRepository,
@@ -19,6 +19,9 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public virtual async Task<ActionResult> Post([FromBody] TEntityRequest entityRequest)
     {
         try
@@ -27,7 +30,7 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
             var entity = await _entityRepository.Add(entityRequestMap);
             var entityResponse = _mapper.Map<TEntityResponse>(entity);
 
-            return Ok(entityResponse);
+            return Created("GetById", entityResponse);
         }
         catch (Exception e)
         {
@@ -36,6 +39,8 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
     }
     
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public virtual async Task<IActionResult> Get()
     {
         var entities = await _entityRepository.GetAll();
@@ -45,6 +50,8 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
     }
     
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public virtual async Task<IActionResult> Get(int id)
     {
         var entity = await _entityRepository.GetById(id);
@@ -57,6 +64,9 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public virtual async Task<IActionResult> Put(int id, TEntityRequest entityRequest)
     {
         var entity = await _entityRepository.GetById(id);
@@ -79,6 +89,9 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
 
         
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public virtual async Task<IActionResult> Delete(int id)
     {
         var entity = await _entityRepository.GetById(id);
