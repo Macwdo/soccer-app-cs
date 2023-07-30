@@ -28,7 +28,7 @@ public class PlayerGameRepository: BaseRepository<PlayerGameEntity>, IPlayerGame
         
         if (game == null)
             throw new Exception($"Game by id {entity.GameId} not found.");
-
+    
         return await base.Add(entity);
     }
 }

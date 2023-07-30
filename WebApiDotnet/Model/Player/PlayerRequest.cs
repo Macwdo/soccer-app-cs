@@ -21,7 +21,7 @@ public class PlayerRequest
     public string? UserId {get; set;}
     
     [ForeignKey("PlayerBankId")]
-    public string? PlayerBankId {get; set;}
+    public int?w PlayerBankId {get; set;}
 
 
 

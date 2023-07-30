@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using WebApiDotnet.Data;
 using WebApiDotnet.Entities;
 using WebApiDotnet.Repositories.Interfaces;
@@ -33,7 +32,7 @@ public class PlayerRepository : BaseRepository<PlayerEntity>, IPlayerRepository
         if (entity.UserId != null)
         {
             var user = await _userManager.FindByIdAsync(entity.UserId);
-            if (user != null)
+            if (user == null)
                 throw new Exception($"User by id {entity.UserId} not found.");
         }
         

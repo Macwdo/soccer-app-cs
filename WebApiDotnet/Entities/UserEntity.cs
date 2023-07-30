@@ -12,6 +12,6 @@ public enum UserType
 public class UserEntity: IdentityUser
 {
     // One to One -> User -> Player
-    public PlayerEntity? Player {get; set;}
+    public PlayerEntity? Player { get; }
     public UserType UserType { get; set; }
 }

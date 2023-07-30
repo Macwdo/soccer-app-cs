@@ -12,7 +12,7 @@ using WebApiDotnet.Data;
 namespace WebApiDotnet.Migrations
 {
     [DbContext(typeof(WebApiDbContext))]
-    [Migration("20230729051942_init")]
+    [Migration("20230730191305_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -216,10 +216,8 @@ namespace WebApiDotnet.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PixKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -275,7 +273,7 @@ namespace WebApiDotnet.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
