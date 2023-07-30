@@ -6,13 +6,13 @@ namespace WebApiDotnet.Model.Player;
 public class PlayerRequest
 {
     [Required, MaxLength(11)]
-    public string? Phone { get; set;}
+    public string Phone { get; set;} = null!;
     
     [Required, MaxLength(20)]
-    public string? FirstName {get; set;}
+    public string FirstName {get; set;} = null!;
 
     [Required, MaxLength(20)]
-    public string? LastName {get; set;}
+    public string LastName {get; set;} = null!;
 
     [Required]
     public bool IsActive {get; set;}
@@ -21,7 +21,7 @@ public class PlayerRequest
     public string? UserId {get; set;}
     
     [ForeignKey("PlayerBankId")]
-    public int?w PlayerBankId {get; set;}
+    public int? PlayerBankId {get; set;}
 
 
 

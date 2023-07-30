@@ -6,8 +6,8 @@ namespace WebApiDotnet.Controllers;
 
 public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Controller
 {
-    private readonly IBaseRepository<TEntity> _entityRepository;
-    private readonly IMapper _mapper;
+    protected readonly IBaseRepository<TEntity> _entityRepository;
+    protected readonly IMapper _mapper;
 
     public BaseCrudController(
         IBaseRepository<TEntity> entityRepository,
@@ -21,10 +21,9 @@ public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Cont
     [HttpPost]
     public virtual async Task<ActionResult> Post([FromBody] TEntityRequest entityRequest)
     {
-        var entityRequestMap = _mapper.Map<TEntity>(entityRequest);
-
         try
         {
+            var entityRequestMap = _mapper.Map<TEntity>(entityRequest);
             var entity = await _entityRepository.Add(entityRequestMap);
             var entityResponse = _mapper.Map<TEntityResponse>(entity);
 
