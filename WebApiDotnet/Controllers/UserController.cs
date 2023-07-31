@@ -33,7 +33,7 @@ public class UserController: Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<IdentityError>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Create([FromBody] UserRequest userRequest)
+    public async Task<IActionResult> Post([FromBody] UserRequest userRequest)
     { 
         var user = _mapper.Map<UserEntity>(userRequest);
         var result = await _userManager.CreateAsync(user, userRequest.Password);
@@ -65,7 +65,7 @@ public class UserController: Controller
     }
 
     [HttpPut("{id}")]  // Admin
-    public async Task<IActionResult> Update(string id, [FromBody] UserRequest userRequest)
+    public async Task<IActionResult> Put(string id, [FromBody] UserRequest userRequest)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)

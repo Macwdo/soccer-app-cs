@@ -6,6 +6,8 @@ namespace WebApiDotnet.Controllers;
 
 public class BaseCrudController<TEntity, TEntityRequest, TEntityResponse> : Controller
 {
+    //TODO -> How we can use IEntityRepository instead of IBaseRepository<TEntity>
+    
     private readonly IBaseRepository<TEntity> _entityRepository;
     private readonly IMapper _mapper;
 

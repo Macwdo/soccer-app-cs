@@ -1,5 +1,3 @@
-using WebApiDotnet.Entities;
-
 namespace WebApiDotnet.Repositories.Interfaces;
 
 public interface IBaseRepository<TEntity>

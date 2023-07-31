@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApiDotnet.Entities;
-using WebApiDotnet.Model;
+using WebApiDotnet.Model.Auth;
 using WebApiDotnet.Services;
 
 namespace WebApiDotnet.Controllers;
 
+[ApiController]
 public class AuthController : Controller
 {
     private readonly UserManager<UserEntity> _userManager;
@@ -21,13 +22,13 @@ public class AuthController : Controller
     }
         
     [HttpPost, Route("auth/login/")] // Admin
-    public async Task<IActionResult> Login(LoginDTO loginDto)
+    public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-        var user = await _userManager.FindByEmailAsync(loginDto.Email);
+        var user = await _userManager.FindByEmailAsync(loginRequest.Email);
         if (user == null)
             return NotFound();
 
-        var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+        var result = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
 
         if (!result)
             return BadRequest(new { detail = "Incorrect password" });

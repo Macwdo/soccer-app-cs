@@ -79,7 +79,6 @@ try
     builder.Services.AddDbContext<WebApiDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
-    // builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IBaseRepository<PlayerEntity>, PlayerRepository>();
     builder.Services.AddScoped<IBaseRepository<PlayerBankEntity>, PlayerBankRepository>();
     builder.Services.AddScoped<IBaseRepository<PlayerBillEntity>, PlayerBillRepository>();
@@ -89,8 +88,6 @@ try
     
     builder.Services.AddScoped<IBaseRepository<PlayerGameEntity>, PlayerGameRepository>();
     
-    // builder.Services.AddScoped<IGameRepository, GameRepository>();
-
     #endregion
 
     # region Hangfire
@@ -147,51 +144,7 @@ try
         o.User.RequireUniqueEmail = true;
     }).AddEntityFrameworkStores<WebApiDbContext>() ;
 
-    // var adminRole = new IdentityRole("Admin");
-    // await roleManager.CreateAsync(adminRole);
-
-    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.create"));
-    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.read"));
-    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.update"));
-    // await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "user.delete"));
-
-
-    builder.Services.AddAuthentication(
-        options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-        }
-        ).AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["JWT_CONFIG:VALID_ISSUER"],
-                ValidAudience = builder.Configuration["JWT_CONFIG:VALID_AUDIENCE"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT_CONFIG:SECRET"]))
-            };
-        });
     
-    builder.Services.AddAuthorization(options =>
-    {
-        // var claims = new Dictionary<string, List<string>>();
-        // claims.Add("User", new List<string>() {"create", "read", "update", "delete"});
-
-        // var adminPolicy = new AuthorizationPolicyBuilder()
-        // .RequireAuthenticatedUser()
-        // .RequireRole("Admin")
-        // .RequireClaim("User", )
-        // .Build();
-
-        // options.AddPolicy("RequireAdminOnly", policy => 
-        //        policy.RequireRole("User", claims["User"])
-        //        );
-    });
     #endregion
 
     #region AutoMapper

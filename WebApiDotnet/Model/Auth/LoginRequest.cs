@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-namespace WebApiDotnet.Model;
 
-public class LoginDTO
+namespace WebApiDotnet.Model.Auth;
+
+public class LoginRequest
 {
-
-    [Required, MaxLength(30)]
-    public string? Username { get; set; }
 
     [Required]
     public string? Email { get; set; }
