@@ -34,8 +34,8 @@ public class LoginService
     
     private SigningCredentials GetSigningCredentials()
     {
-        var jwtConfig = _configuration.GetSection("jwtConfig");
-        var key = Encoding.UTF8.GetBytes(jwtConfig["Secret"]);
+        var jwtConfig = _configuration.GetSection("JWT_CONFIG");
+        var key = Encoding.UTF8.GetBytes(jwtConfig["SECRET"]);
         var secret = new SymmetricSecurityKey(key);
         return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
